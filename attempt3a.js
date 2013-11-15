@@ -1,5 +1,6 @@
 var request = require('request');
 var cheerio = require('cheerio');
+var count=0;
 
 var url = 'http://espn.go.com/nfl/statistics/player/_/stat/receiving/sort/receivingYards/year/2012/qualified/false/count/1';
 var stats=[];
@@ -24,12 +25,8 @@ function player(array){
 
 
 
-
-scrape =  function(){
-for (page=0;page<10;page++){
-
-url='http://espn.go.com/nfl/statistics/player/_/stat/receiving/sort/receivingYards/year/2012/qualified/false/count/' +(page*40+1);
-
+function req(url, callback){
+  count++;
   request(url, function(err, resp, body) {
   if (err)
     throw err;
@@ -60,19 +57,21 @@ url='http://espn.go.com/nfl/statistics/player/_/stat/receiving/sort/receivingYar
     allplayers[playerCount]=new player(stats);
     playerCount++;
   });
-    console.log(page)
-    console.log('this is when it actually happens');
-      if (page>8) { console.log("i'm last?")}
-})
-  console.log('async playerCount happens inside of loop= '+playerCount)
+  count--;
+  if (count==0)
+    parseData();
+   });
 
-
-   };
-
-console.log('in scrape but i want this last');
 }
 
-scrape();
-console.log('called scrape');
-console.log(playerCount)
+function parseData(){
+  console.log(playerCount)
+  console.log(allplayers[playerCount-1])
+}
+
+
+for (page=0;page<10;page++){
+url='http://espn.go.com/nfl/statistics/player/_/stat/receiving/sort/receivingYards/year/2012/qualified/false/count/'+(page*40+1);
+req(url);
+}
   //console.log(allplayers[playerCount-1].called);
