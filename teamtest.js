@@ -10,9 +10,17 @@ function league(){
 	this.called='NFL';
 	this.getTeam=getTeam;
 	function getTeam(name){
-	  for (i=0;i<allteams.length;i++)
-	    if (allteams[i].called===name)
+	  for (i=0;i<allteams.length;i++){
+      console.log(allteams[i].called + name)
+	    if (allteams[i].called===name){
+        console.log('true')
 	    	return i;
+      }
+      else{
+        console.log(name+ ' uh-oh');
+        return 0;
+      }
+    }
 	} 
 		
 }
@@ -38,9 +46,12 @@ function team(name){
 
 
 	function createTeams(array){
-  for (i=0;i<array.length;i++)
-    var teamname= (array[i]);
-    allteams[i]= new team(array[i]);}
+    for (i=0;i<array.length;i++){
+      allteams[i]= new team(array[i]);
+      console.log(allteams[i])
+    }
+
+  }
 
 
 function receiverStats(callback){
