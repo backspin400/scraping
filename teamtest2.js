@@ -24,6 +24,7 @@ function team(name){
   this.stat1=0;
   this.stat2=0;
   this.stat3=0;
+  this.answer=0;
   this.addstats=addstats;
   function addstats(){
   	this.stat1+=parseInt(arguments[0]);
@@ -44,6 +45,17 @@ function team(name){
 
        }}
 
+
+function compare(a,b){
+  if (a.answer>b.answer)
+    return 1;
+
+  if (a.answer<b.answer)
+    return -1;
+
+  return 0;
+
+}
 
 
 function receiverStats(callback){
@@ -113,6 +125,86 @@ function req(url, callback){
    });
 
 }
+function receiverPercentage(){
+  var totalreceptions=0;
+  var totaltargets=0;
+  var personalcatchpercentage;
+  var winner=0;
+  var name;
+  var winnertargets;
+  var player;
+  var receptions;
+  var targets;
+  var teamwinner;
+  var teampercent;
+  var winnerpercent=0;
+  for (i=0;i<allplayers.length;i++)
+  {
+    player=allplayers[i];
+    feed=(player.team+'/').substring(0,3);
+    receptions=parseInt(player.receptions);
+    targets=parseInt(player.targets);
+    if (player.position=='WR'){
+      allteams[NFL.getTeam(feed)].addstats(receptions,targets);
+    }
+    if(receptions/targets>winner&&receptions>=50 && player.position=='WR'){
+      winner=receptions/targets;
+      name=player.called;
+      winnertargets=targets;
+    }
+    totalreceptions+=parseInt(player.receptions);
+    totaltargets+=parseInt(player.targets);
+  }
+  for (i=0;i<allteams.length;i++){
+    var teamtotals=allteams[i].retrievestats();
+    teampercent=(teamtotals[0]/teamtotals[1]);
+    if (teampercent>winnerpercent){
+        teamwinner=allteams[i];
+        winnerpercent=(teampercent);
+    }
+  }
+
+
+  var catchpercent=totalreceptions/totaltargets*100;
+
+
+  console.log('of '+playerCount+ ' recievers, the average reception percentage was '+catchpercent.toFixed(2)+'%')
+  console.log(name+' had the best recieving percentage (minimum 50 attempts) with '+(winner*100).toFixed(2)+'% receiving on '+winnertargets+' targets')
+  console.log(teamwinner.called+ ' is the team with highest receiver percentage with their wide receivers catching an ' +(winnerpercent*100).toFixed(2)+ '% of targets.')
+  
+}
+
+function recYardsPerAttempt(){
+  var player;
+  var winningrypa=0;
+  var winner;
+  var teamwinner;
+  var teamrypa=0;
+  var feed;var rypa;
+  for (i=0; i<allplayers.length;i++){
+    player=allplayers[i];
+    feed=(player.team+'/').substring(0,3);
+    if (player.position=='WR'){
+      allteams[NFL.getTeam(feed)].addstats(player.totalyards,player.targets);
+    }
+    if (player.totalyards/player.targets>winningrypa&& player.position=='WR'&&player.targets>=50){
+        winner=player;
+        winningrypa=(player.totalyards)/player.targets;
+    }
+  }
+  for (i=0;i<allteams.length;i++){
+    var teamtotals=allteams[i].retrievestats();
+    rypa=(teamtotals[0]/teamtotals[1]);
+    if (rypa>teamrypa){
+        teamwinner=allteams[i];
+        teamrypa=(rypa);
+    }
+  }
+
+  console.log('the ' +teamwinner.called+ ' wide recievers have the most yards per attempt gaining an average '+teamrypa.toFixed(2)+ ' yards every throw')
+  console.log(winner.called+ ' had the most yards per targets (min 50 targets)  with ' +(winningrypa).toFixed(2)+ ' yards per target')
+}
+
 
 function distanceDownfield(){
   var player;
@@ -123,7 +215,7 @@ function distanceDownfield(){
   var teamwinner;
   for (i=0; i<allplayers.length;i++){
     player=allplayers[i];
-     feed=(player.team+'/').substring(0,3);
+    feed=(player.team+'/').substring(0,3);
     if (player.position=='WR'){
       allteams[NFL.getTeam(feed)].addstats(player.totalyards,player.yardsaftercatch,player.receptions);
     }
@@ -152,5 +244,5 @@ NFL=new league();
 createTeams(teamnames);
 
 
-receiverStats(distanceDownfield)
+receiverStats(receiverPercentage)
 
