@@ -1,9 +1,8 @@
-var http = require('http');
-var url=require('url');
+var http = require("http");
+var url = require('url');
 var fs = require('fs');
-//var io=require('socket.io')(server);
-var port = process.env.PORT || 1337;
-
+var io = require('socket.io');
+ 
 var server = http.createServer(function(request, response){ 
     console.log('Connection');
     var path = url.parse(request.url).pathname;
@@ -11,7 +10,7 @@ var server = http.createServer(function(request, response){
     switch(path){
         case '/':
             response.writeHead(200, {'Content-Type': 'text/html'}); 
-            response.write('hello barry, nice of you to join me');
+            response.write('hello world');
             break;
         case 'socket.html':
             fs.readFile(__dirname + path, function(error, data){
@@ -33,4 +32,8 @@ var server = http.createServer(function(request, response){
     response.end(); 
 }); 
  
-server.listen(port); 
+server.listen(8001);
+ 
+server.listen(8001);
+ 
+var io.listen(server);
