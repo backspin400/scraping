@@ -5,8 +5,6 @@ var cheerio = require('cheerio');
 var count=0;var stats=[];
 var allplayers=[];
 var playerCount=0;
-var index=0;
-
 
 function league(){
 	this.called='NFL';
@@ -18,6 +16,8 @@ function league(){
 	} 
 		
 }
+
+
 
 function team(name){
   this.called=name;
@@ -64,6 +64,8 @@ url='http://espn.go.com/nfl/statistics/player/_/stat/receiving/sort/receivingYar
 req(url,callback)}
 }
 
+
+
 function player(array){
   this.called=array[0];
   this.position=array[1];
@@ -78,7 +80,7 @@ function player(array){
   this.yardspgame=(array[10]);
   this.fumbles=(array[11]);
   this.yardsaftercatch=(array[12]);
-  this.receivingfirstdowns=(array[13]);
+  this.recievingfirstdowns=(array[13]);
 }
 
 
@@ -121,25 +123,8 @@ function req(url, callback){
   if (count==0)
     callback();
    });
-}
 
-function receiverPercentage2(){
-  var winnerpercent=0;
-  var winner;
-  if(index<allplayers.length){
-    if(allplayers[index].receptions/allplayers[index].targets>winnerpercent && allplayers[index].receptions>=50&&allplayers[index].position=='WR'){
-      winnerpercent=allplayers[index].receptions/allplayers[index].targets;
-      winner=allplayers[index];
-    }
-    index++;
-    receiverPercentage2();
-  }
-  else{
-    index=0;
-    console.log(winner.called+' had the best recieving percentage (minimum 50 attempts) with '+(winnerpercent*100).toFixed(2)+'% receiving on '+winner.targets+' targets')
-  }
 }
-
 function receiverPercentage(){
   var totalreceptions=0;
   var totaltargets=0;
@@ -220,30 +205,6 @@ function recYardsPerAttempt(){
   console.log(winner.called+ ' had the most yards per targets (min 50 targets)  with ' +(winningrypa).toFixed(2)+ ' yards per target')
 }
 
-var winner;
-function firstDownsPerReception(){
-  var curperc=0;
-  var winnerpercentage=0;
-  if (index<allplayers.length){
-    console.log(index)
-    console.log(winnerpercentage)
-    curperc=(allplayers[index].receivingfirstdowns/allplayers[index].receptions);
-    if(curperc>winnerpercentage&&allplayers[index].targets>=50&&allplayers[index].position=='WR'){
-      winner=allplayers[index];
-      console.log(winner)
-      winnerpercentage=curperc;
-      console.log(winnerpercentage)
-    }
-    index++;
-    firstDownsPerReception();
-  }
-  else{
-    console.log(winner)
-    index=0;
-    console.log(winnerpercentage)
-    console.log((winnerpercentage*100).toFixed(2) + 'of ' +winner.called+ '\' receptions turn into first downs' );
-  }
-}
 
 function distanceDownfield(){
   var player;
@@ -283,5 +244,5 @@ NFL=new league();
 createTeams(teamnames);
 
 
-receiverStats(firstDownsPerReception)
+receiverStats(receiverPercentage)
 
