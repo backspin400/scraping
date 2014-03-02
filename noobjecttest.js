@@ -7,6 +7,9 @@ var url = 'http://espn.go.com/nfl/statistics/player/_/stat/receiving/sort/receiv
 var stats=[];
 var allplayers=[];
 var playerCount=0;
+var minTargets=50;
+if (year<2006)
+  minTargets=0;
 
 function receiverStats(callback){
 for (page=0;page<10;page++){
@@ -134,13 +137,27 @@ function distanceDownfield(){
     player=allplayers[i];
     curfur=(player.totalyards-player.yardsaftercatch)/player.receptions;
 
-    if (curfur>furthest&& player.position=='WR'&&player.targets>=50)
+if (year>2005 || year<2002){
+    if (curfur>furthest&& player.position=='WR'&&player.targets>=minTargets)
+      {
+        winner=player;
+        furthest=(curfur);}
+  }
+else{    
+  if (curfur>furthest&& player.position=='WR'&&player.receptions>=30)
       {
         winner=player;
         furthest=(curfur);}
   }
 
-  console.log(winner.called+ ' catches furthest downfield (min 50 targets)  with catches an average of ' +(furthest).toFixed(2)+ ' yards downfield')
+
+}
+
+
+if (year>2005||year<2002)
+  console.log(winner.called+ ' catches furthest downfield (min ' +minTargets+' targets)  with catches an average of ' +(furthest).toFixed(2)+ ' yards downfield')
+else
+  console.log(winner.called+ ' catches furthest downfield (min 30 receptions)  with catches an average of ' +(furthest).toFixed(2)+ ' yards downfield')
 }
   
 
