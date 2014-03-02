@@ -1,15 +1,16 @@
 	var request = require('request');
 var cheerio = require('cheerio');
 var count=0;
-
-var url = 'http://espn.go.com/nfl/statistics/player/_/stat/receiving/sort/receivingYards/year/2012/qualified/false/count/1';
+var testToRun= process.argv[2];
+var year=process.argv[3];
+var url = 'http://espn.go.com/nfl/statistics/player/_/stat/receiving/sort/receivingYards/year/'+year +'/qualified/false/count/1';
 var stats=[];
 var allplayers=[];
 var playerCount=0;
 
 function receiverStats(callback){
 for (page=0;page<10;page++){
-url='http://espn.go.com/nfl/statistics/player/_/stat/receiving/sort/receivingYards/year/2012/qualified/false/count/'+(page*40+1);
+url='http://espn.go.com/nfl/statistics/player/_/stat/receiving/sort/receivingYards/year/'+year+'/qualified/false/count/'+(page*40+1);
 req(url,callback)}
 }
 
@@ -100,7 +101,7 @@ function receiverPercentage(){
   }
   var catchpercent=totalreceptions/totaltargets*100;
 
-  console.log('of '+playerCount+ ' recievers, the average reception percentage was '+catchpercent.toFixed(2)+'%')
+  console.log('Of '+playerCount+ ' recievers, the average reception percentage was '+catchpercent.toFixed(2)+'%')
   console.log(name+' had the best recieving percentage (minimum 50 attempts) with '+(winner*100).toFixed(2)+'% receiving on '+winnertargets+' targets')
 
   
@@ -145,5 +146,5 @@ function distanceDownfield(){
 
 
 
-receiverStats(distanceDownfield)
+receiverStats(eval(testToRun));
 
