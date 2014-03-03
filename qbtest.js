@@ -49,7 +49,7 @@ function qb(array){
   this.attempts=array[3];
   this.percentage=(array[4]);
   this.totalyards=array[5];
-  this.average=(array[6]);
+  this.yardsPerAttemp=(array[6]);
   this.touchdowns=(array[8]);
   this.longest=(array[7]);
   this.interceptions=(array[9]);
@@ -226,7 +226,25 @@ function yardsPerInt(){
 console.log(winner.called + ' gains about ' +tot.toFixed(0) +' yards for every interception he throws.')
 }
 
-
+function tdsPerAttempt(){
+  var player;
+  var tds;
+  var attempts;
+  var tot=1000;
+  var winner;
+  var curcount;
+  for(i=0;i<allplayers.length;i++){
+    player=allplayers[i];
+    curcount=(parseInt(player.attempts)/parseInt(player.touchdowns));
+    if (curcount<tot&& parseInt(player.touchdowns)>0){
+      winner=player;
+      tot=curcount;
+      tds=player.touchdowns;
+      attempts=player.attempts;
+    }
+  }
+  console.log(winner.called + ' passes for a touchdown once for every '+ tot.toFixed(2)+ ' he throws the ball.')
+}
 
 
 eval(position+'Stats('+testToRun+')');
