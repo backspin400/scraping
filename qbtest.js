@@ -1,8 +1,9 @@
-	var request = require('request');
+var request = require('request');
 var cheerio = require('cheerio');
 var count=0;
-var testToRun= process.argv[2];
-var year=process.argv[3];
+var position=process.argv[2];
+var testToRun= process.argv[3];
+var year=process.argv[4];
 var url;
 var stats=[];
 var allplayers=[];
@@ -136,7 +137,7 @@ function qbReq(url,callback){
 
 }
 
-
+//recStats
 function receiverPercentage(){
   var totalreceptions=0;
   var totaltargets=0;
@@ -201,15 +202,12 @@ function distanceDownfield(){
         winner=player;
         furthest=(curfur);}
   }
-
-
-
-
-
-
   console.log(winner.called+ ' catches furthest downfield (min  50 receptions)  with catches an average of ' +(furthest).toFixed(2)+ ' yards downfield')
 }
   
+
+
+ //qbStats 
 function yardsPerInt(){
   var player;
   var sacks;
@@ -229,4 +227,6 @@ console.log(winner.called + ' gains about ' +tot.toFixed(0) +' yards for every i
 }
 
 
-qbStats(yardsPerInt)
+
+
+eval(position+'Stats('+testToRun+')');
