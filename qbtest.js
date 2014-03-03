@@ -3,7 +3,7 @@ var cheerio = require('cheerio');
 var count=0;
 var testToRun= process.argv[2];
 var year=process.argv[3];
-var url = 'http://espn.go.com/nfl/statistics/player/_/stat/receiving/sort/receivingYards/year/'+year +'/qualified/false/count/1';
+var url;
 var stats=[];
 var allplayers=[];
 var playerCount=0;
@@ -11,14 +11,19 @@ var minTargets=50;
 
 
 function receiverStats(callback){
-for (page=0;page<10;page++){
-url='http://espn.go.com/nfl/statistics/player/_/stat/receiving/sort/receivingYards/year/'+year+'/qualified/false/count/'+(page*40+1);
-req(url,callback)}
+  for (page=0;page<10;page++){
+    url='http://espn.go.com/nfl/statistics/player/_/stat/receiving/sort/receivingYards/year/'+year+'/qualified/false/count/'+(page*40+1);
+    recReq(url,callback);
+  }
+}
+
+function qbStats(callback){
+  url='http://espn.go.com/nfl/statistics/player/_/stat/passing/year/'+year+'/qualified/false';
+  qbReq(url,callback);
 }
 
 
-
-function player(array){
+function receiver(array){
   this.called=array[0];
   this.position=array[1];
   this.team=array[2];
@@ -37,7 +42,7 @@ function player(array){
 
 
 
-function req(url, callback){
+function recReq(url, callback){
   count++;
   request(url, function(err, resp, body) {
   if (err)
@@ -54,7 +59,7 @@ function req(url, callback){
     for (i=2; i<14; i++)
       stats[i]=stats[i].text();
 
-    allplayers[playerCount]=new player(stats);
+    allplayers[playerCount]=new receiver(stats);
     playerCount++;
   });
 
@@ -67,13 +72,26 @@ function req(url, callback){
       stats[i]=stats[i-1].next();
     for (i=2; i<14; i++)
       stats[i]=stats[i].text();
-    allplayers[playerCount]=new player(stats);
+    allplayers[playerCount]=new receiver(stats);
     playerCount++;
   });
   count--;
   if (count==0)
     callback();
    });
+
+}
+
+function qbReq(url,callback){
+  count++;
+  request(url, function(err, resp, body){
+  if (err)
+    throw err;
+  $ = cherrio.load(body);
+
+  
+
+  })
 
 }
 
