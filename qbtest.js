@@ -30,7 +30,7 @@ function receiver(array){
   this.receptions=array[3];
   this.targets=(array[4]);
   this.totalyards=array[5];
-  this.avgyardspr=(array[6]);
+  this.average=(array[6]);
   this.touchdowns=(array[7]);
   this.longest=(array[8]);
   this.over20=(array[9]);
@@ -40,7 +40,22 @@ function receiver(array){
   this.recievingfirstdowns=(array[13]);
 }
 
-
+function qb(array){
+  this.called=array[0];
+  this.position='QB';
+  this.team=array[1];
+  this.completions=array[2];
+  this.attempts=array[3];
+  this.percentage=(array[4]);
+  this.totalyards=array[5];
+  this.average=(array[6]);
+  this.touchdowns=(array[8]);
+  this.longest=(array[7]);
+  this.interceptions=(array[9]);
+  this.sacks=(array[10]);
+  this.rating=(array[11]);
+  this.yardspgame=array[12];
+}
 
 function recReq(url, callback){
   count++;
@@ -75,6 +90,7 @@ function recReq(url, callback){
     allplayers[playerCount]=new receiver(stats);
     playerCount++;
   });
+
   count--;
   if (count==0)
     callback();
@@ -83,17 +99,43 @@ function recReq(url, callback){
 }
 
 function qbReq(url,callback){
-  count++;
   request(url, function(err, resp, body){
   if (err)
     throw err;
-  $ = cherrio.load(body);
+  $ = cheerio.load(body);
 
-  
+  $('.oddrow').each(function(){
+    stats[0]=$(this).find('a');
+    stats[1]=stats[0].parent().next();
+    for (i=2;i<13;i++){
+      stats[i]=stats[i-1].next();
+    }
+    for (i=0;i<13;i++){
+      stats[i]=stats[i].text();
+    }
 
-  })
+    allplayers[playerCount]=new qb(stats);
+    playerCount++;
+  });
+
+    $('.evenrow').each(function(){
+    stats[0]=$(this).find('a');
+    stats[1]=stats[0].parent().next();
+    for (i=2;i<13;i++){
+      stats[i]=stats[i-1].next();
+    }
+    for (i=0;i<13;i++){
+      stats[i]=stats[i].text();
+    }
+
+    allplayers[playerCount]=new qb(stats);
+    playerCount++;
+  });
+  callback();
+  });
 
 }
+
 
 function receiverPercentage(){
   var totalreceptions=0;
@@ -168,8 +210,23 @@ function distanceDownfield(){
   console.log(winner.called+ ' catches furthest downfield (min  50 receptions)  with catches an average of ' +(furthest).toFixed(2)+ ' yards downfield')
 }
   
+function yardsPerInt(){
+  var player;
+  var sacks;
+  var ints;
+  var tot=0;
+  var winner;
+  var curcount;
+  for (i=0;i<allplayers.length;i++){
+    player=allplayers[i];
+    curcount=(parseInt(player.totalyards.replace(',','')))/(parseInt(player.interceptions));
+    if (curcount>tot){
+      winner=player;
+      tot=curcount;
+    }
+  }
+console.log(winner.called + ' gains about ' +tot.toFixed(0) +' yards for every interception he throws.')
+}
 
 
-
-receiverStats(eval(testToRun));
-
+qbStats(yardsPerInt)
