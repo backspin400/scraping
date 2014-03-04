@@ -164,7 +164,7 @@ function receiverPercentage(){
   }
   var catchpercent=totalreceptions/totaltargets*100;
 
-  console.log('Of '+playerCount+ ' recievers, the average reception percentage was '+catchpercent.toFixed(2)+'%')
+  console.log("In "+ year + ", of "+playerCount+ ' recievers, the average reception percentage was '+catchpercent.toFixed(2)+'%')
   console.log(name+' had the best recieving percentage (minimum 50 receptions) with '+(winner*100).toFixed(2)+'% receiving on '+winnertargets+' targets')
 
   
@@ -184,7 +184,7 @@ function recYardsPerAttempt(){
         winningrypa=(player.totalyards)/player.targets;}
   }
 
-  console.log(winner.called+ ' had the most yards per targets (min 50 receptions)  with ' +(winningrypa).toFixed(2)+ ' yards per target')
+  console.log("In "+ year + ", "+winner.called+ ' had the most yards per targets (min 50 receptions)  with ' +(winningrypa).toFixed(2)+ ' yards per target')
 }
 
 
@@ -202,7 +202,7 @@ function distanceDownfield(){
         winner=player;
         furthest=(curfur);}
   }
-  console.log(winner.called+ ' catches furthest downfield (min  50 receptions)  with catches an average of ' +(furthest).toFixed(2)+ ' yards downfield')
+  console.log("In "+ year + ", "+winner.called+ ' catches furthest downfield (min  50 receptions)  with catches an average of ' +(furthest).toFixed(2)+ ' yards downfield')
 }
   
 
@@ -223,7 +223,7 @@ function yardsPerInt(){
       tot=curcount;
     }
   }
-console.log(winner.called + ' gains about ' +tot.toFixed(0) +' yards for every interception he throws.')
+console.log("In "+ year + ", "+winner.called + ' gains about ' +tot.toFixed(0) +' yards for every interception he throws.')
 }
 
 function attemptsForTD(){
@@ -243,7 +243,7 @@ function attemptsForTD(){
       attempts=player.attempts;
     }
   }
-  console.log(winner.called + ' passes for a touchdown once for every '+ tot.toFixed(2)+ ' he throws the ball.')
+  console.log("In "+ year + ", "+winner.called + ' passes for a touchdown once for every '+ tot.toFixed(2)+ ' he throws the ball.')
 }
 
 
