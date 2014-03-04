@@ -226,7 +226,7 @@ function yardsPerInt(){
 console.log(winner.called + ' gains about ' +tot.toFixed(0) +' yards for every interception he throws.')
 }
 
-function tdsPerAttempt(){
+function attemptsForTD(){
   var player;
   var tds;
   var attempts;
