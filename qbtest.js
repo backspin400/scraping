@@ -49,7 +49,7 @@ function qb(array){
   this.attempts=array[3];
   this.percentage=(array[4]);
   this.totalyards=array[5];
-  this.yardsPerAttemp=(array[6]);
+  this.passingYardsPerAttempt=(array[6]);
   this.touchdowns=(array[8]);
   this.longest=(array[7]);
   this.interceptions=(array[9]);
@@ -245,7 +245,23 @@ function attemptsForTD(){
   console.log("In "+ year + ", "+winner.called + ' passes for a touchdown once for every '+ tot.toFixed(2)+ ' he throws the ball.')
 }
 
-
+function ratingToSacks(){
+  var player;
+  var rating;
+  var sacks;
+  var tot=0;
+  var curcount;
+  for (i=0;i<allplayers.length;i++){
+    player=allplayers[i];
+    curcount=(parseInt(player.rating)/parseInt(player.sacks));
+    if (curcount>tot && parseInt(player.sacks)>0){
+      winner=player;
+      tot=curcount;
+    }
+    
+  }
+  console.log("In "+ year + ", "+ winner.called + ' had ' + tot.toFixed(2) + ' rating points gained for each time he was sacked.')
+}
 
 
 eval(position+'Stats('+testToRun+')');
