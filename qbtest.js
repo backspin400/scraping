@@ -162,9 +162,8 @@ function receiverPercentage(){
     totaltargets+=parseInt(player.targets);
 
   }
-  var catchpercent=totalreceptions/totaltargets*100;
 
-  console.log("In "+ year + ", of "+playerCount+ ' recievers, the average reception percentage was '+catchpercent.toFixed(2)+'%')
+  console.log("In "+ year + ", of "+playerCount+ ' recievers, the average reception percentage was '+catchpercent.toFixed(2)*100+'%')
   console.log(name+' had the best recieving percentage (minimum 50 receptions) with '+(winner*100).toFixed(2)+'% receiving on '+winnertargets+' targets')
 
   
@@ -245,6 +244,8 @@ function attemptsForTD(){
   }
   console.log("In "+ year + ", "+winner.called + ' passes for a touchdown once for every '+ tot.toFixed(2)+ ' he throws the ball.')
 }
+
+
 
 
 eval(position+'Stats('+testToRun+')');
